@@ -2,6 +2,9 @@ import pygame
 from sys import exit
 import os
 
+#program code import
+import main_classes
+
 ## TODO:
 #add fps indepdence for camera
 #add multiple polygons (placing them)
@@ -14,64 +17,13 @@ HEIGHT = 202
 
 pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED, pygame.OPENGL, vsync=1) #360 202?
-#print(pygame.display.list_modes())
 clock = pygame.time.Clock()
 
-#game directories
-BASEDIR = os.getcwd()
-GRAPHICS = os.path.join(BASEDIR,"graphics")
-
-class Camera(pygame.math.Vector2):
-    def __init__(self):
-        '''creates the 'global' vars of camera.x and y. Don't change the vars outside of these functions of course'''
-        super().__init__()
-        self.x = 0
-        self.y = 0
-        self.a_pressed = False
-        self.d_pressed = False
-        self.w_pressed = False
-        self.s_pressed = False
-
-
-    def update(self):
-        vector = pygame.Vector2()
-        vector.xy = 0,0
-        if self.a_pressed:
-            vector +=1,0
-        if self.d_pressed:
-            vector -=1,0
-        if self.w_pressed:
-            vector +=0,1
-        if self.s_pressed:
-            vector -=0,1
-        try:
-            vector = vector.normalize()
-            self.x +=vector.x
-            self.y +=vector.y
-        except:
-            return None
-
-class Hexagon(pygame.sprite.Sprite):
-    def __init__(self,x,y):
-        '''create the hexagon class for OOB'''
-        super().__init__()
-        self.x_pos = x
-        self.y_pos = y
-        hexagon = pygame.image.load(os.path.join(GRAPHICS,'hexagon.png')).convert_alpha()
-        #hexagon = pygame.transform.scale2x(hexagon)
-        self.image = hexagon
-        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.x,self.y_pos-camera.y))
-
-    def update(self):
-        #call animation function
-        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.x,self.y_pos-camera.y))
-        #self.destroy()
-
 #creates the camera
-camera = Camera()
+camera = main_classes.Camera()
 
 hexagon_group = pygame.sprite.Group()
-hexagon_group.add(Hexagon(100,100))
+hexagon_group.add(main_classes.Hexagon(100,100))
 
 #game loop
 while True:
@@ -83,22 +35,22 @@ while True:
             if event.key == pygame.K_f: #fullscreen
                 pygame.display.toggle_fullscreen()
             if event.key == pygame.K_a: #need to make hold down button work
-                camera.a_pressed = True
+                main_classes.camera.a_pressed = True
             if event.key == pygame.K_d: #need to make hold down button work
-                camera.d_pressed = True
+                main_classes.camera.d_pressed = True
             if event.key == pygame.K_w: #need to make hold down button work
-                camera.w_pressed = True
+                main_classes.camera.w_pressed = True
             if event.key == pygame.K_s: #need to make hold down button work
-                camera.s_pressed = True
+                main_classes.camera.s_pressed = True
         if event.type == pygame.KEYUP: #for buttons that need to be held down
             if event.key == pygame.K_a:
-                camera.a_pressed = False
+                main_classes.camera.a_pressed = False
             if event.key == pygame.K_d:
-                camera.d_pressed = False
+                main_classes.camera.d_pressed = False
             if event.key == pygame.K_w:
-                camera.w_pressed = False
+                main_classes.camera.w_pressed = False
             if event.key == pygame.K_s:
-                camera.s_pressed = False
+                main_classes.camera.s_pressed = False
 
     #draw/update screen/objects
     pygame.display.update()
@@ -107,4 +59,4 @@ while True:
     SCREEN.fill((255,255,255))
     hexagon_group.draw(SCREEN)
     hexagon_group.update()
-    camera.update()
+    main_classes.camera.update()
