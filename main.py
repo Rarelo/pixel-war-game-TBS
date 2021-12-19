@@ -3,9 +3,9 @@ from sys import exit
 import os
 
 ## TODO:
-#vsync not existing
-#polygon placement system
-#fix hexagons to render as a group
+#add fps indepdence for camera
+#add multiple polygons (placing them)
+#add movement functionality to polygons
 
 
 #global vars
@@ -13,7 +13,7 @@ WIDTH = 360 #make rendering system based on multiples?
 HEIGHT = 202
 
 pygame.init()
-SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED) #360 202?
+SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED, pygame.OPENGL, vsync=1) #360 202?
 #print(pygame.display.list_modes())
 clock = pygame.time.Clock()
 
@@ -31,7 +31,6 @@ class Camera(pygame.math.Vector2):
         self.d_pressed = False
         self.w_pressed = False
         self.s_pressed = False
-        print(dir())
 
 
     def update(self):
@@ -53,25 +52,26 @@ class Camera(pygame.math.Vector2):
             return None
 
 class Hexagon(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self,x,y):
         '''create the hexagon class for OOB'''
         super().__init__()
+        self.x_pos = x
+        self.y_pos = y
         hexagon = pygame.image.load(os.path.join(GRAPHICS,'hexagon.png')).convert_alpha()
         #hexagon = pygame.transform.scale2x(hexagon)
         self.image = hexagon
-        self.rect = self.image.get_rect(midbottom = (80-camera.x,100-camera.y))
+        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.x,self.y_pos-camera.y))
 
     def update(self):
         #call animation function
-        self.rect = self.image.get_rect(midbottom = (300-camera.x,100-camera.y))
+        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.x,self.y_pos-camera.y))
         #self.destroy()
 
 #creates the camera
 camera = Camera()
 
-#creates the map hexagons
-hexagon1 = pygame.sprite.GroupSingle()
-hexagon1.add(Hexagon())
+hexagon_group = pygame.sprite.Group()
+hexagon_group.add(Hexagon(100,100))
 
 #game loop
 while True:
@@ -105,6 +105,6 @@ while True:
     clock.tick(60)
 
     SCREEN.fill((255,255,255))
-    hexagon1.draw(SCREEN)
-    hexagon1.update()
+    hexagon_group.draw(SCREEN)
+    hexagon_group.update()
     camera.update()
