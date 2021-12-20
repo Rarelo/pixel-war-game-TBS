@@ -1,7 +1,9 @@
 import pygame
 import os
 
+#first things program needs to work
 pygame.init()
+clock = pygame.time.Clock()
 
 #game directories
 BASEDIR = os.getcwd()
@@ -20,6 +22,16 @@ class Camera(pygame.math.Vector2):
         self.s_pressed = False
 
     def update(self):
+        '''sets camera direction and velocity each frame. past_frame_time and current_frame_time are global vars'''
+        global past_frame_time, current_frame_time
+        try: #loop to make camera speed frame independent
+            past_frame_time = current_frame_time
+            current_frame_time = pygame.time.get_ticks()/1000
+            dt = current_frame_time-past_frame_time
+        except:
+            current_frame_time = pygame.time.get_ticks()/1000
+            dt = 1
+        dt = dt * 60
         vector = pygame.Vector2()
         vector.xy = 0,0
         if self.a_pressed:
@@ -32,12 +44,12 @@ class Camera(pygame.math.Vector2):
             vector -=0,1
         try:
             vector = vector.normalize()
-            self.x +=vector.x
-            self.y +=vector.y
+            self.x +=vector.x*dt
+            self.y +=vector.y*dt
         except:
             return None
 
-#apparently need to define the camera here too for the hexagon class
+#define game camera object here for hexagon class
 camera = Camera()
 
 class Hexagon(pygame.sprite.Sprite):

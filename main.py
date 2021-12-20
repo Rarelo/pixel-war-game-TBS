@@ -15,13 +15,11 @@ import main_classes
 WIDTH = 360 #make rendering system based on multiples?
 HEIGHT = 202
 
-pygame.init()
+#display settings
+pygame.display.set_caption('pixel war game')
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED, pygame.OPENGL, vsync=1) #360 202?
-clock = pygame.time.Clock()
 
-#creates the camera
-camera = main_classes.Camera()
-
+#create objects
 hexagon_group = pygame.sprite.Group()
 hexagon_group.add(main_classes.Hexagon(100,100))
 
@@ -54,7 +52,7 @@ while True:
 
     #draw/update screen/objects
     pygame.display.update()
-    clock.tick(60)
+    main_classes.clock.tick(60)
 
     SCREEN.fill((255,255,255))
     hexagon_group.draw(SCREEN)
