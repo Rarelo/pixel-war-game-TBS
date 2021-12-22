@@ -6,9 +6,10 @@ import os
 import main_classes
 
 ## TODO:
-#add fps indepdence for camera
 #add multiple polygons (placing them)
 #add movement functionality to polygons
+#add engine functionality nit features (MVP)
+#raise pixel sise for better animations
 
 
 #global vars
@@ -21,7 +22,23 @@ SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED, pygame.OPENGL, vs
 
 #create objects
 hexagon_group = pygame.sprite.Group()
-hexagon_group.add(main_classes.Hexagon(100,100))
+
+def create_polygons(new_hexagon,realative_hexagon, side):
+    '''create new polygons and place them correctly'''
+    realative_hexagon.create_neighboring_polygon(side,new_hexagon)
+    hexagon_group.add(new_hexagon)
+
+hexagon1 = main_classes.Hexagon(100,100)
+hexagon_group.add(hexagon1)
+
+hexagon2 = main_classes.Hexagon(200,200)
+create_polygons(hexagon2,hexagon1,6)
+
+hexagon3 = main_classes.Hexagon(200,200)
+create_polygons(hexagon3,hexagon1,4)
+
+hexagon4 = main_classes.Hexagon(200,200)
+create_polygons(hexagon4,hexagon2,4)
 
 #game loop
 while True:
