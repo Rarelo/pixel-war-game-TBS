@@ -21,24 +21,32 @@ pygame.display.set_caption('pixel war game')
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT),pygame.SCALED, pygame.OPENGL, vsync=1) #360 202?
 
 #create objects
-hexagon_group = pygame.sprite.Group()
-
-def create_polygons(new_hexagon,realative_hexagon, side):
-    '''create new polygons and place them correctly'''
-    realative_hexagon.create_neighboring_polygon(side,new_hexagon)
-    hexagon_group.add(new_hexagon)
+hexagon_group = pygame.sprite.LayeredUpdates()
+RenderEngine1 = main_classes.RenderEngine() #creates an instance of the render engine class
 
 hexagon1 = main_classes.Hexagon(100,100)
-hexagon_group.add(hexagon1)
+RenderEngine1.create_polygons(hexagon1,None,None,hexagon_group)
 
 hexagon2 = main_classes.Hexagon(200,200)
-create_polygons(hexagon2,hexagon1,6)
+RenderEngine1.create_polygons(hexagon2,hexagon1,6,hexagon_group)
 
 hexagon3 = main_classes.Hexagon(200,200)
-create_polygons(hexagon3,hexagon1,4)
+RenderEngine1.create_polygons(hexagon3,hexagon1,4,hexagon_group)
 
 hexagon4 = main_classes.Hexagon(200,200)
-create_polygons(hexagon4,hexagon2,4)
+RenderEngine1.create_polygons(hexagon4,hexagon2,4,hexagon_group)
+
+hexagon4 = main_classes.Hexagon(200,200)
+RenderEngine1.create_polygons(hexagon4,hexagon1,1,hexagon_group)
+
+hexagon5 = main_classes.Hexagon(200,200)
+RenderEngine1.create_polygons(hexagon5,hexagon1,2,hexagon_group)
+
+hexagon6 = main_classes.Hexagon(200,200)
+RenderEngine1.create_polygons(hexagon6,hexagon1,3,hexagon_group)
+
+
+hexagon_group = RenderEngine1.sort_hexagons(main_classes.hexagon_list, hexagon_group)
 
 #game loop
 while True:

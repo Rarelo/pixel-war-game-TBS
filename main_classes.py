@@ -77,33 +77,75 @@ class Hexagon(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.x,self.y_pos-camera.y))
         #self.destroy()
 
-    def create_neighboring_polygon(self,side,hexagon):
-        '''saves polygon adjacency and moves a polygon to the correct neighboring side'''
+    def create_neighboring_polygon(self,side,hexagon,hexagon_group):
+        '''determines the correct xy for the new adjacent polygon'''
         if side == 1:
-            self.side1 = hexagon
+            #self.side1 = hexagon
+            xylist = [self.x_pos - 28, self.y_pos - 13]
+            hexagon.correct_position(xylist)
+            #hexagon_group.move_to_back(hexagon)
         if side == 2:
-            self.side2 = hexagon
+            #self.side2 = hexagon
+            xylist = [self.x_pos - 2, self.y_pos - 28]
+            hexagon.correct_position(xylist)
+            #hexagon_group.move_to_back(hexagon)
+            #if 2 or 3 rendered after 1 the visuals will break
         if side == 3:
-            self.side3 = hexagon
+            #self.side3 = hexagon
+            xylist = [self.x_pos + 26, self.y_pos - 15]
+            hexagon.correct_position(xylist)
+            #hexagon_group.move_to_back(hexagon)
         if side == 4:
-            self.side4 = hexagon
+            #self.side4 = hexagon
             xylist = [self.x_pos - 26, self.y_pos + 15]
             hexagon.correct_position(xylist)
-            print(4, xylist)
         if side == 5:
-            self.side5 = hexagon
+            #self.side5 = hexagon
             xylist = [self.x_pos + 2, self.y_pos + 28]
             hexagon.correct_position(xylist)
-            print(5, xylist)
         if side == 6:
-            self.side6 = hexagon
+            #self.side6 = hexagon
             xylist = [self.x_pos + 28, self.y_pos + 13]
             hexagon.correct_position(xylist)
-            print(6, xylist)
 
     def correct_position(self,xylist):
-        '''called to update the location of a hexagon in relation to it's neighbor'''
+        '''called to update the location of a hexagon in relation to it's
+        neighbor after create_neighboring_polygon'''
         self.x_pos = xylist[0]
         self.y_pos = xylist[1]
         #print(self.x_pos)
         #print(self.y_pos)
+
+class RenderEngine():
+    def __init__(self):
+        None
+
+    def create_polygons(self, new_hexagon,realative_hexagon, side,hexagon_group):
+        '''create new polygons and place them correctly. Takes the polygon to be moved,
+        the polygon to give the coords, the side of the og polygon to move to, and the rendering group'''
+        global hexagon_list
+        try: hexagon_list.append(new_hexagon)
+        except:
+            hexagon_list = []
+            hexagon_list.append(new_hexagon)
+        if realative_hexagon != None:
+            realative_hexagon.create_neighboring_polygon(side,new_hexagon,hexagon_group)
+        else: None
+
+    def sort_hexagons(self, hexagon_list, hexagon_group):
+        '''takes in a list of hexagons and an empty render group and outputs a
+        full render group from that list based on hexagon y_pos'''
+        ydictionary = {}
+        for i in hexagon_list:
+            y = i.y_pos
+            ydictionary[y] = i
+        ydictionary_keys_sorted = sorted(ydictionary.keys())
+        hexagon_list_sorted = []
+        for i in ydictionary_keys_sorted:
+            hexagon_list_sorted.append(ydictionary[i])
+        for i in hexagon_list_sorted:
+            hexagon_group.add(i)
+        return hexagon_group
+
+        #if you create a class in a method then it would cease to exist after right?
+        #it would continue to exist if you export it in a list right?
