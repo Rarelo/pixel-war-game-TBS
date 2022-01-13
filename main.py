@@ -15,6 +15,8 @@ import terminal
 #raise the window resolution, higher resolutions? Fullscreen?
 #add movement functionality to polygons
 #add engine functionality nit features (MVP)
+#place hexagons according to mathmatical grid
+#if even use the hexagon number system anymore save the hexagon number to each hex and recalc when a new hexagon is added
 
 
 #global vars
@@ -32,10 +34,10 @@ pygame.display.set_caption('pixel war game')
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT), pygame.SCALED, vsync=1) #360 202?
 
 #create objects
-render.create_polygons(None,None) #need this polygon so hexagon_list exists
+render.add_hexagon(0,0) #need this polygon so hexagon_list exists
 
-for i in range(5):
-    render.create_polygons(render.hexagon_list[i],random.randint(1,6))
+#for i in range(500):
+#    render.create_polygons(render.hexagon_list[i],random.randint(1,6))
 
 hexagon.hexagon_group = render.sort_polygons(render.hexagon_list)
 
