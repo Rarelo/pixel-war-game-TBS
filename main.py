@@ -10,13 +10,10 @@ import render
 import terminal
 
 ## TODO:
-#fix the broken rendering for the added terminal polygons
-#split the classes structure into mutliple files
 #raise the window resolution, higher resolutions? Fullscreen?
 #add movement functionality to polygons
 #add engine functionality nit features (MVP)
-#place hexagons according to mathmatical grid
-#if even use the hexagon number system anymore save the hexagon number to each hex and recalc when a new hexagon is added
+#clean up the code
 
 
 #global vars
@@ -34,12 +31,16 @@ pygame.display.set_caption('pixel war game')
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT), pygame.SCALED, vsync=1) #360 202?
 
 #create objects
-render.add_hexagon(0,0) #need this polygon so hexagon_list exists
+hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
 
-#for i in range(500):
-#    render.create_polygons(render.hexagon_list[i],random.randint(1,6))
+for i in range(50):
+    value = random.randint(0,1)
+    if value == 0:
+        value = 'normal'
+    else: value = 'water'
+    hexagon.Hexagon(random.randint(-2,2),random.randint(-2,2),value)
 
-hexagon.hexagon_group = render.sort_polygons(render.hexagon_list)
+hexagon.hexagon_group = render.sort_polygons()
 
 #game loop
 while True:

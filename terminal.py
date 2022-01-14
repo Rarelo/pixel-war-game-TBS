@@ -10,9 +10,8 @@ def user_command_input():
     parse_command(command_input)
 
 def parse_command(command_input):
-    '''pareses the command_list into command and argument variables while also
-    testing for parenthesis errors'''
-    #should remove spaces and tabs at some point in here
+    '''pareses the command_list into command and argument variables.
+    NOTE: Will crash easily upon mistyping'''
     if command_input.find("(") != -1:
         command_input.replace(" ",'')
         command_input.replace(" ",'')
@@ -31,24 +30,24 @@ def parse_command(command_input):
         run_command(command,None)
 
 def run_command(command, arguments):
-    '''runs implemented commands while testing for errors.
-    NOTE: Should break into sub methods/classes'''
+    '''runs implemented commands. NOTE will crash easily upon mistyping'''
     if command == 'hexagon':
         try:
             arguments_list = arguments.split(",")
         except:
             print('Error: Enter Integers for Arguments')
             return None
-        for i in arguments_list:
-            try:
-                int(i)
-            except:
-                print("Error: Enter Integers for Arugments")
-                return None
+        #for i in arguments_list:
+        #    try:
+        #        int(i)
+        #    except:
+        #        print("Error: Enter Integers for Arugments")
+        #        return None
         a_pos = int(arguments_list[0])
         b_pos = int(arguments_list[1])
-        render.add_hexagon(a_pos,b_pos)
-        hexagon.hexagon_group = render.sort_polygons(render.hexagon_list)
+        type = arguments_list[2]
+        hexagon.Hexagon(a_pos,b_pos,type)
+        hexagon.hexagon_group = render.sort_polygons()
         print('Success')
         #print(render.hexagon_group)
         return None
