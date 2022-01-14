@@ -10,49 +10,55 @@ def user_command_input():
     parse_command(command_input)
 
 def parse_command(command_input):
-    '''pareses the command_list into command and argument variables.
-    NOTE: Will crash easily upon mistyping'''
-    if command_input.find("(") != -1:
-        command_input.replace(" ",'')
-        command_input.replace(" ",'')
-        command_list = []
-        command_list = command_input.split("(")
-        if command_list[1].find(")") == -1:
-            print('Error: Parenthesis Error')
-            return None
-        else:
-            command_list.append(command_list[1].split(")")[0])
-        command = command_list[0]
-        arguments = command_list[2]
-        run_command(command,arguments)
+    '''Uses parethesis to parse the user input into runable commands and calls the run function'''
+    if command_input.find("(") != -1: #if it finds a
+        command_input = command_input.replace(' ','') #spaces are removed
+        command_list = command_input.split(")") #using ) to parse the number of commands
+        command_list = command_list[:-1]
+        for i in command_list: #split all the commands into parsable bits
+            command_split = i.split('(')
+            command = command_split[0]
+            arguments = command_split[1]
+            arguments_list = arguments.split(',')
+            choose_command(command,arguments_list)
     else:
-        command = command_input
-        run_command(command,None)
+        print('Error: No Parenthesis')
+        user_command_input()
 
-def run_command(command, arguments):
+def choose_command(command, arguments_list):
     '''runs implemented commands. NOTE will crash easily upon mistyping'''
     if command == 'hexagon':
-        try:
-            arguments_list = arguments.split(",")
-        except:
-            print('Error: Enter Integers for Arguments')
-            return None
-        #for i in arguments_list:
-        #    try:
-        #        int(i)
-        #    except:
-        #        print("Error: Enter Integers for Arugments")
-        #        return None
-        a_pos = int(arguments_list[0])
-        b_pos = int(arguments_list[1])
-        type = arguments_list[2]
-        hexagon.Hexagon(a_pos,b_pos,type)
-        hexagon.hexagon_group = render.sort_polygons()
-        print('Success')
-        #print(render.hexagon_group)
-        return None
+        run_hexagon(command,arguments_list)
     if command == 'help':
-        print('unimplemented')
-        #input relative hexagon number and desired side, both in integers
-    else:
-        print('Error: Not a command')
+        run_help(command,arguments_list)
+    if command == 'quit':
+        run_quit()
+
+def run_help(command,arguments_list):
+    print('unimplemented')
+
+def run_quit():
+    pygame.quit()
+    exit()
+
+def run_hexagon(command,arguments_list):
+    '''command that creates a hexagon based on parsed user inputs'''
+    for i in range(2):
+        try:
+            arguments_list[i] = int(arguments_list[i])
+        except: print("this shouldn't happen")
+    try:
+        if type(arguments_list[0]) == type(1): #check to make sure the arguments are the right types
+            if type(arguments_list[1]) == type(1):
+                hexagon.Hexagon(arguments_list[0],arguments_list[1],arguments_list[2])
+                hexagon.hexagon_group = render.sort_polygons()
+                print('Hexagon created at ('+str(arguments_list[0])+','+str(arguments_list[1])+')')
+            else:
+                print('Error: Hexagon takes 3 arguments. An integer, an integer, and a string')
+                user_command_input()
+        else:
+            print('Error: Hexagon takes 3 arguments. An integer, an integer, and a string')
+            user_command_input()
+    except:
+        print('Error: Input Error')
+        user_command_input()
