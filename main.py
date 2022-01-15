@@ -4,6 +4,8 @@ import os
 import random
 
 #program code import
+import constants
+
 import hexagon
 import camera
 import render
@@ -13,17 +15,7 @@ import terminal
 #raise the window resolution, higher resolutions? Fullscreen?
 #add movement functionality to polygons
 #add engine functionality nit features (MVP)
-#clean up the code
-
-#displau modes
-#[(1920, 1200), (1920, 1080), (1680, 1050), (1600, 1200), (1600, 1024), (1600, 900), (1440, 900), (1440, 810), (1400, 1050), (1400, 900), (1368, 768), (1360, 768), (1280, 1024), (1280, 960), (1280, 800), (1280, 720), (1152, 864), (1024, 768), (1024, 576), (960, 720), (960, 600), (960, 540), (928, 696), (896, 672), (864, 486), (840, 525), (800, 600), (800, 512), (800, 450), (720, 450), (720, 405), (700, 525), (700, 450), (684, 384), (680, 384), (640, 512), (640, 480), (640, 400), (640, 360), (576, 432), (512, 384), (512, 288), (480, 270), (432, 243), (400, 300), (360, 202), (320, 240), (320, 180)]
-
-
-
-#global vars
-WIDTH = 360 #make rendering system based on multiples?
-HEIGHT = 202 #848, 480, also remove scaled from mode b/c it breaks vsync
-GAMESTATE = True
+#
 
 #first things program needs to work
 pygame.init()
@@ -31,8 +23,7 @@ clock = pygame.time.Clock()
 
 
 #display settings
-pygame.display.set_caption('pixel war game')
-SCREEN = pygame.display.set_mode((WIDTH,HEIGHT), vsync=1) #360 202?
+render.create_game_screen(1920,1200) #if you call this render function again it breaks placing hexagons
 
 #create objects
 hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
@@ -79,9 +70,6 @@ while True:
     pygame.display.update()
     clock.tick(60)
 
-    if GAMESTATE:
-        SCREEN.fill((255,255,255))
-        hexagon.hexagon_group.draw(SCREEN)
-        hexagon.hexagon_group.update()
-        camera.camera1.update()
+    if constants.GAMESTATE:
+        render.game_update_screen()
 #if __name__ == "__main__": can make a debug suite with arguments

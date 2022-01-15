@@ -3,6 +3,7 @@ import directories
 import os
 
 import camera
+import constants
 
 
 class Hexagon(pygame.sprite.Sprite):
@@ -12,20 +13,27 @@ class Hexagon(pygame.sprite.Sprite):
         # a and b position a roated x,y grid that represents each hexagon's position
         self.a_pos = a
         self.b_pos = b
-        self.x_pos = 100 + 28*a +2*b
-        self.y_pos = 100 +13*a +28*b
+        self.x_pos = (100 + 28*a +2*b)*constants.SCALEINGVALUEREL
+        self.y_pos = (100 +13*a +28*b)*constants.SCALEINGVALUEREL
 
         #setting the type
-        hexagon = None
+        flavor = None
         if type == 'normal':
-            hexagon = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon.png')).convert_alpha()
-        if type == 'water':
-            hexagon = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon_water.png')).convert_alpha()
-        if type == None:
+            flavor = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon.png')).convert_alpha()
+        elif type == 'water':
+            flavor = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon_water.png')).convert_alpha()
+        else:
             print('type error')
             return None
-        #hexagon = pygame.transform.scale2x(hexagon)
-        self.image = hexagon
+        try:
+            image_width = hexagon_width
+            image_height = hexagon_height
+        except:
+            image_height_old = flavor.get_height()
+            image_width_old = flavor.get_width()
+            image_width = image_width_old*constants.SCALEINGVALUEREL
+            image_height = image_height_old*constants.SCALEINGVALUEREL
+        self.image = pygame.transform.scale(flavor,(image_width,image_height))
         self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
         self.check_conflicting_hexagons(a,b)
 
@@ -35,6 +43,21 @@ class Hexagon(pygame.sprite.Sprite):
         #call animation function
         self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
         #self.destroy()
+
+
+    def update_size_and_position(self):
+        global hexagon_height, hexagon_width
+        self.x_pos = self.x_pos*constants.SCALEINGVALUEREL
+        self.y_pos = self.y_pos*constants.SCALEINGVALUEREL
+        image_height_old = self.image.get_height()
+        image_width_old = self.image.get_width()
+        image_width = image_width_old*constants.SCALEINGVALUEREL
+        image_height = image_height_old*constants.SCALEINGVALUEREL
+        hexagon_width = image_width
+        hexagon_height = image_height
+        self.image = pygame.transform.scale(self.image,(image_width,image_height))
+        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
+        print(self.x_pos,self.y_pos)
 
     def check_conflicting_hexagons(self,a,b):
         '''creates a dictionay to keep track of where hexagons are placed and is used to create

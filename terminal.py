@@ -3,6 +3,8 @@ import directories
 import render
 import hexagon
 
+import constants
+
 
 def user_command_input():
     '''takes and outputs user input'''
@@ -25,28 +27,35 @@ def parse_command(command_input):
         print('Error: No Parenthesis')
         user_command_input()
 
-def choose_command(command, arguments_list):
+def choose_command(command,arguments_list):
     '''runs implemented commands. NOTE will crash easily upon mistyping'''
     if command == 'hexagon':
-        run_hexagon(command,arguments_list)
+        run_hexagon(arguments_list)
     if command == 'help':
-        run_help(command,arguments_list)
+        run_help(arguments_list)
     if command == 'quit':
         run_quit()
+    if command == 'render':
+        #run_change_resolution(arguments_list)
+        print('currently disabled for safety because it will break hexagon placement')
+    if command == 'rendersizes':
+         print(pygame.display.list_modes())
+    if command == 'game':
+        None
 
-def run_help(command,arguments_list):
+def run_help(arguments_list):
     print('unimplemented')
 
 def run_quit():
     pygame.quit()
     exit()
 
-def run_hexagon(command,arguments_list):
+def run_hexagon(arguments_list):
     '''command that creates a hexagon based on parsed user inputs'''
     for i in range(2):
         try:
             arguments_list[i] = int(arguments_list[i])
-        except: print("this shouldn't happen")
+        except: print("Error: Input integers for first two arguments")
     try:
         if type(arguments_list[0]) == type(1): #check to make sure the arguments are the right types
             if type(arguments_list[1]) == type(1):
@@ -61,4 +70,21 @@ def run_hexagon(command,arguments_list):
             user_command_input()
     except:
         print('Error: Input Error')
+        user_command_input()
+
+def run_change_resolution(arguments_list):
+    for i in range(2):
+        try:
+            arguments_list[i] = int(arguments_list[i])
+        except:
+            print('Error3: Input numbers for screen width and height')
+            user_command_input()
+    if type(arguments_list[0]) == type(1): #check to make sure the arguments are the right types
+        if type(arguments_list[1]) == type(1):
+            render.create_game_screen(arguments_list[0],arguments_list[1])
+        else:
+            print('Error2: Input numbers for screen width and height')
+            user_command_input()
+    else:
+        print('Error1: Input numbers for screen width and height')
         user_command_input()

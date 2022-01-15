@@ -1,4 +1,5 @@
 import pygame
+import constants
 
 
 class Camera(pygame.math.Vector2):
@@ -35,8 +36,8 @@ class Camera(pygame.math.Vector2):
             vector +=0,1
         try:
             vector = vector.normalize()
-            self.x +=vector.x*dt
-            self.y +=vector.y*dt
+            self.x +=(vector.x*dt)*constants.SCALEINGVALUEABS
+            self.y +=(vector.y*dt)*constants.SCALEINGVALUEABS
         except:
             return None
 
