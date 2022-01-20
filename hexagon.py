@@ -46,6 +46,7 @@ class Hexagon(pygame.sprite.Sprite):
 
 
     def update_size_and_position(self):
+        '''my attempt to make hexagons scale correctly with the changing screen size'''
         global hexagon_height, hexagon_width
         self.x_pos = self.x_pos*constants.SCALEINGVALUEREL
         self.y_pos = self.y_pos*constants.SCALEINGVALUEREL
@@ -57,7 +58,7 @@ class Hexagon(pygame.sprite.Sprite):
         hexagon_height = image_height
         self.image = pygame.transform.scale(self.image,(image_width,image_height))
         self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
-        print(self.x_pos,self.y_pos)
+        #print(self.x_pos,self.y_pos)
 
     def check_conflicting_hexagons(self,a,b):
         '''creates a dictionay to keep track of where hexagons are placed and is used to create
@@ -72,3 +73,6 @@ class Hexagon(pygame.sprite.Sprite):
         except:
             hexagon_dictionary = {}
         hexagon_dictionary[a,b] = self
+
+def get_unit_position(self):
+    return [self.x_pos,self.y_pos]

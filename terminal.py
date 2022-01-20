@@ -2,6 +2,7 @@ import pygame
 import directories
 import render
 import hexagon
+import unit
 
 import constants
 
@@ -41,7 +42,9 @@ def choose_command(command,arguments_list):
     if command == 'rendersizes':
          print(pygame.display.list_modes())
     if command == 'game':
-        None
+        None #to go back to the game
+    if command == 'unit':
+        place_unit(arguments_list)
 
 def run_help(arguments_list):
     print('unimplemented')
@@ -88,3 +91,26 @@ def run_change_resolution(arguments_list):
     else:
         print('Error1: Input numbers for screen width and height')
         user_command_input()
+
+def place_unit(arguments_list):
+    for i in range(2):
+        try:
+            arguments_list[i] = int(arguments_list[i])
+        except: print("Error: Input integers for first two arguments")
+    if len(arguments_list) != 2:
+        print("Error: Wrong Number of Arguments")
+    else:
+        for i in arguments_list:
+            if type(i) != type(1):
+                print('Error: Please enter integers')
+                return None
+        a = arguments_list[0] #actual code begins
+        b = arguments_list[1]
+        try:
+            hexagon_tile = hexagon.hexagon_dictionary[(a,b)]
+        except:
+            print('Error: Error finding that hexagon')
+            return None
+        print('Hexagon found')
+        unit_xy_position = hexagon.get_unit_position(hexagon_tile)
+        unit.Unit(unit_xy_position[0],unit_xy_position[1])

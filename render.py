@@ -1,6 +1,7 @@
 import pygame
 import hexagon
 import camera
+import unit
 
 import constants
 
@@ -25,6 +26,9 @@ def game_update_screen():
     hexagon.hexagon_group.draw(SCREEN)
     hexagon.hexagon_group.update()
     camera.camera1.update()
+    unit.unit_group.draw(SCREEN)
+    unit.unit_group.update()
+    #print(unit.unit_group.sprites())
 
 def sort_polygons():
     '''orders the hexagon_dictionary so that sprites render in the correct order.

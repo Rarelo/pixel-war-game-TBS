@@ -10,6 +10,7 @@ import hexagon
 import camera
 import render
 import terminal
+import unit
 
 ## TODO:
 #raise the window resolution, higher resolutions? Fullscreen?
@@ -24,9 +25,10 @@ clock = pygame.time.Clock()
 
 #display settings
 render.create_game_screen(1920,1200) #if you call this render function again it breaks placing hexagons
-
+#360,202
 #create objects
 hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
+unit.Unit(0,0)
 
 for i in range(0):
     value = random.randint(0,1)
