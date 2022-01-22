@@ -23,7 +23,7 @@ class Hexagon(pygame.sprite.Sprite):
         elif type == 'water':
             flavor = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon_water.png')).convert_alpha()
         else:
-            print('type error')
+            print('Error: Not a valid hexagon type.')
             return None
         try:
             image_width = hexagon_width

@@ -13,12 +13,12 @@ import terminal
 import unit
 
 ## TODO:
-#raise the window resolution, higher resolutions? Fullscreen?
-#add movement functionality to polygons
-#add engine functionality nit features (MVP)
-#
 
-#first things program needs to work
+#add engine functionality not features (MVP)
+#focus on making code I'll need to use more than in one instance as clean and modular as possible
+#clean up and fix the scaling/unit placement system
+
+
 pygame.init()
 clock = pygame.time.Clock()
 
