@@ -1,2 +1,2 @@
 # pixel-war-game-TBS
-tbd
+A simple hopeful hexagon based wargame coded as a first coding project.
