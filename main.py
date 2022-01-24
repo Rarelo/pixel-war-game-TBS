@@ -3,20 +3,21 @@ from sys import exit
 import os
 import random
 
-#program code import
 import constants
 
 import hexagon
+import unit
 import camera
 import render
 import terminal
-import unit
+#import unit
 
 ## TODO:
 
 #add engine functionality not features (MVP)
 #focus on making code I'll need to use more than in one instance as clean and modular as possible
-#clean up and fix the scaling/unit placement system
+#camera x,y movemnt does not scale, and scaling down causes the game to become really far away
+#strange things happening in the terminal with inputs like hexagon(1,0,normal(
 
 
 pygame.init()
@@ -24,7 +25,7 @@ clock = pygame.time.Clock()
 
 
 #display settings
-render.create_game_screen(1920,1200) #if you call this render function again it breaks placing hexagons
+render.create_game_screen(1920,1080) #if you call this render function again it breaks placing hexagons
 #360,202
 #create objects
 hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
@@ -37,7 +38,7 @@ for i in range(0):
     else: value = 'water'
     hexagon.Hexagon(random.randint(-2,2),random.randint(-2,2),value)
 
-hexagon.hexagon_group = render.sort_polygons()
+render.sort_polygons()
 
 #game loop
 while True:

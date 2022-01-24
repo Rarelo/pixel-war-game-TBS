@@ -35,14 +35,14 @@ def choose_command(command,arguments_list):
     if command == 'hexagon':
         arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),type('s'),None,None)
         if arguments_list != None: #keeps hexagon from activating with invalid inputs
-            print('check passed')
+            #print('check passed')
             run_hexagon(arguments_list)
         else: return None
     if command == 'quit':
         run_quit()
-#    if command == 'render':
-#        render.create_game_screen(arguments_list[0],arguments_list[1])
-#        print('currently disabled for safety because it will break hexagon placement')
+    if command == 'render':
+        arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
+        render.create_game_screen(arguments_list[0],arguments_list[1])
     if command == 'rendersizes':
          print(pygame.display.list_modes())
     if command == 'game':
@@ -50,7 +50,7 @@ def choose_command(command,arguments_list):
     if command == 'unit':
         arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
         if arguments_list != None: #keeps hexagon from activating with invalid inputs
-            print('check passed')
+            #print('check passed')
             place_unit(arguments_list)
         else:
             return None
@@ -98,10 +98,6 @@ def check_inputs_and_interify(arguments_list, input1, input2, input3, input4, in
             return None
     return arguments_list
 
-def run_quit():
-    pygame.quit()
-    exit()
-
 #################################################################################################
 ########################## ACTUAL TERMINAL COMMANDS HERE ########################################
 #################################################################################################
@@ -109,17 +105,18 @@ def run_quit():
 def run_hexagon(arguments_list):
     '''command that creates a hexagon based on parsed user inputs'''
     hexagon.Hexagon(arguments_list[0],arguments_list[1],arguments_list[2])
-    hexagon.hexagon_group = render.sort_polygons()
+    render.sort_polygons()
     print('Hexagon created at ('+str(arguments_list[0])+','+str(arguments_list[1])+')')
 
 def place_unit(arguments_list):
     a = arguments_list[0] #actual code begins
     b = arguments_list[1]
-    try:
-        hexagon_tile = hexagon.hexagon_dictionary[(a,b)]
-    except:
-        print('Error: Error finding that hexagon')
+    hexagon_tile = hexagon.retrieve_hexagon_at_position(a,b)
+    if hexagon_tile == None:
+        user_command_input() #restart the terminal attempt
         return None
-    print('Hexagon found')
-    unit_xy_position = hexagon.get_unit_position(hexagon_tile)
-    unit.Unit(unit_xy_position[0],unit_xy_position[1])
+    unit.Unit(a,b)
+
+def run_quit():
+    pygame.quit()
+    exit()

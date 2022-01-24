@@ -36,9 +36,10 @@ class Camera(pygame.math.Vector2):
             vector +=0,1
         try:
             vector = vector.normalize()
-            self.x +=(vector.x*dt)*constants.SCALEINGVALUEABS
-            self.y +=(vector.y*dt)*constants.SCALEINGVALUEABS
+            self.x +=(vector.x*dt)*constants.SCALING_VALUE_ABSOLUTE
+            self.y +=(vector.y*dt)*constants.SCALING_VALUE_ABSOLUTE
         except:
+
             return None
 
 #define game camera object here for hexagon class

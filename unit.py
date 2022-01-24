@@ -1,33 +1,38 @@
 import pygame
-import hexagon
-import camera
-
 import os
+
 import directories
 import constants
 
+import camera
+import pixelobject
+import hexagon
+
 unit_group = pygame.sprite.LayeredUpdates()
 
-class Unit(pygame.sprite.Sprite):
-    def __init__(self,x_pos,y_pos):
+class Unit(pixelobject.Pixelobject):
+    def __init__(self,a,b):
         '''create the unit class for OOB'''
         global unit_group
         super().__init__()
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        image = pygame.image.load(os.path.join(directories.GRAPHICS,'unit.png')).convert_alpha()
+        #will need to recalculate x, y pos when a,b changes
+        self.a_pos = a
+        self.b_pos = b
+        self.place_unit(a,b) #unit placement borrowed from hexagon
 
-        image_height_old = image.get_height()
-        image_width_old = image.get_width()
-        image_width = image_width_old*constants.SCALEINGVALUEREL
-        image_height = image_height_old*constants.SCALEINGVALUEREL
 
-        self.image = pygame.transform.scale(image,(image_width,image_height))
-        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
+        self.original_image = pygame.image.load(os.path.join(directories.GRAPHICS,'unit.png')).convert_alpha()
+        self.create_scaled_image_and_rect()
+
         unit_group.add(self)
 
-    def update(self):
-        '''updates the hexagon display/location based on camera movement'''
-        #call animation function
-        self.rect = self.image.get_rect(midbottom = (self.x_pos-camera.camera1.x,self.y_pos-camera.camera1.y))
-        #print(self.image.get_height())
+    def update_size_and_position(self):
+        '''An overwrite of the pixelobject method because units get their position
+        from hexagons'''
+        self.place_unit(self.a_pos,self.b_pos)
+        self.create_scaled_image_and_rect()
+
+    def place_unit(self,a,b):
+        hexagon_tile = hexagon.retrieve_hexagon_at_position(a,b)
+        x,y = hexagon_tile.get_position()
+        self.x_pos,self.y_pos = x,y-29*constants.SCALING_VALUE_ABSOLUTE
