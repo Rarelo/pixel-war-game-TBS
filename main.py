@@ -17,7 +17,7 @@ import terminal
 #add engine functionality not features (MVP)
 #focus on making code I'll need to use more than in one instance as clean and modular as possible
 #camera x,y movemnt does not scale, and scaling down causes the game to become really far away
-#strange things happening in the terminal with inputs like hexagon(1,0,normal(
+#strange things happening in the terminal with inputs like hexagon(1,0,normal)
 
 
 pygame.init()

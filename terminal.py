@@ -3,6 +3,7 @@ import directories
 import render
 import hexagon
 import unit
+import save
 
 import constants
 
@@ -54,6 +55,8 @@ def choose_command(command,arguments_list):
             place_unit(arguments_list)
         else:
             return None
+    if command == 'save':
+        save.save_level()
 
 def check_inputs_and_interify(arguments_list, input1, input2, input3, input4, input5):
     '''a modular function to check if the user inputed inputs are correct for the desired command

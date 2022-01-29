@@ -9,6 +9,7 @@ import pixelobject
 
 
 hexagon_group = pygame.sprite.LayeredUpdates()
+hexagon_dictionary = {}
 
 
 def retrieve_hexagon_at_position(a,b):
@@ -21,6 +22,20 @@ def retrieve_hexagon_at_position(a,b):
         return None
     return hexagon_tile
 
+def export_hexagon_dictionary():
+    '''exports a complete list of the positions and types of hexagons in the
+    level for level/game saving'''
+    level_hexagons = list(hexagon_dictionary.keys())
+    list_index = -1
+    for i in level_hexagons:
+        list_index += 1 #have to keep track of the element of the list to write it later
+        specific_hexagon = hexagon_dictionary.get(i)
+        specific_hexagon_type = specific_hexagon.type #get the type of the hexagon
+        x =i[0]
+        y =i[1]
+        level_hexagons[list_index] = (x,y,specific_hexagon_type)
+    return level_hexagons
+
 class Hexagon(pixelobject.Pixelobject):
     def __init__(self,a,b,type):
         '''create the hexagon class for OOB'''
@@ -29,6 +44,7 @@ class Hexagon(pixelobject.Pixelobject):
         # hexagons are represented by a simple a,b coordinate system
         self.a_pos = a
         self.b_pos = b
+        self.type = None
 
         self.original_x_pos = (100 + 28*a +2*b) #before scaling
         self.original_y_pos = (100 +13*a +28*b) #before scaling
@@ -37,8 +53,10 @@ class Hexagon(pixelobject.Pixelobject):
         #setting the type
         if type == 'normal':
             self.original_image = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon.png')).convert_alpha()
+            self.type = 'normal'
         elif type == 'water':
             self.original_image = pygame.image.load(os.path.join(directories.GRAPHICS,'hexagon_water.png')).convert_alpha()
+            self.type = 'water'
         else:
             print('Error: Not a valid hexagon type.')
             return None
@@ -52,18 +70,13 @@ class Hexagon(pixelobject.Pixelobject):
         Called after hexagon init.'''
         global hexagon_dictionary
         ablist = (a,b)
-        try:
-            hexagonskeys = hexagon_dictionary.keys()
-            for i in hexagonskeys:
-                if ablist == i:
-                    print('Overwriting hexagon at '+ str(ablist))
-        except:
-            hexagon_dictionary = {}
+        #try:
+        hexagonskeys = hexagon_dictionary.keys()
+        for i in hexagonskeys:
+            if ablist == i:
+                print('Overwriting hexagon at '+ str(ablist))
         hexagon_dictionary[a,b] = self
 
     def get_position(self):
         '''gets the x and y position of a hexagon (used in unit placement)'''
         return self.x_pos,self.y_pos
-
-    #need to call hexagon pos upon unit creation to place it on a hexagon
-    #every time the game resolution is resized these units need to be replaced
