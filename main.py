@@ -14,10 +14,12 @@ import terminal
 
 ## TODO:
 
-#add engine functionality not features (MVP)
 #focus on making code I'll need to use more than in one instance as clean and modular as possible
+#create a prototype, then create a presetable MVP as a proof of concept
+
+#### BUGS ####
 #camera x,y movemnt does not scale, and scaling down causes the game to become really far away
-#strange things happening in the terminal with inputs like hexagon(1,0,normal)
+#strange things happening in the terminal with inputs like hexagon(1,0,normal(
 
 
 pygame.init()
@@ -31,12 +33,12 @@ render.create_game_screen(1920,1080) #if you call this render function again it 
 hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
 unit.Unit(0,0)
 
-for i in range(0):
+for i in range(50):
     value = random.randint(0,1)
     if value == 0:
         value = 'normal'
     else: value = 'water'
-    hexagon.Hexagon(random.randint(-2,2),random.randint(-2,2),value)
+    hexagon.Hexagon(random.randint(-i,i),random.randint(-i,i),value)
 
 render.sort_polygons()
 

@@ -3,6 +3,7 @@ import directories
 import render
 import hexagon
 import unit
+import parse
 import save
 
 import constants
@@ -34,7 +35,7 @@ def choose_command(command,arguments_list):
     command section and changing the desired function inputs to test for. Runs check_inputs to
     prevent user input crashes and to change arguments_list strings into integers'''
     if command == 'hexagon':
-        arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),type('s'),None,None)
+        arguments_list = parse.check_inputs_and_interify(arguments_list,type(1),type(1),type('s'),None,None)
         if arguments_list != None: #keeps hexagon from activating with invalid inputs
             #print('check passed')
             run_hexagon(arguments_list)
@@ -42,64 +43,23 @@ def choose_command(command,arguments_list):
     if command == 'quit':
         run_quit()
     if command == 'render':
-        arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
+        arguments_list = parse.check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
         render.create_game_screen(arguments_list[0],arguments_list[1])
     if command == 'rendersizes':
          print(pygame.display.list_modes())
     if command == 'game':
         None #to go back to the game
     if command == 'unit':
-        arguments_list = check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
+        arguments_list = parse.check_inputs_and_interify(arguments_list,type(1),type(1),None,None,None)
         if arguments_list != None: #keeps hexagon from activating with invalid inputs
             #print('check passed')
             place_unit(arguments_list)
         else:
             return None
-    if command == 'save':
+    if command == 'savelevel':
         save.save_level()
-
-def check_inputs_and_interify(arguments_list, input1, input2, input3, input4, input5):
-    '''a modular function to check if the user inputed inputs are correct for the desired command
-    NOTE: Exports a arguments list with strings converted to integers (when possible) and takes on the
-    user defined arguments_list and each type of desired input for each part of that list.
-    Run before calling the desired terminal function to avoid errors. Input None in the inputs field
-    for extra parameters"'''
-
-    function_arguments_list = []
-    function_arguments_list.append(input1)
-    function_arguments_list.append(input2)
-    function_arguments_list.append(input3)
-    function_arguments_list.append(input4)
-    function_arguments_list.append(input5)
-    for i in function_arguments_list:
-        try:
-            function_arguments_list.remove(None) #skip inputs of None
-        except:
-            None
-    i_pos = -1 #keep track of the index element in a list
-    for i in arguments_list: #convert strings to integers
-        try:
-            i_pos += 1
-            arguments_list[i_pos] = int(i)
-        except:
-            None
-    #check to make sure the number of user inputs matches the function input
-    if len(function_arguments_list) == len(arguments_list):
-        None
-    else:
-        print('Error: Incorrect Number of arguments')
-        user_command_input() #restart the terminal attempt
-        return None
-    i_pos = -1
-    for i in function_arguments_list:
-        i_pos +=1
-        if i == type(arguments_list[i_pos]): #check if each user input equals the desired function input type
-            None
-        else:
-            print('Error: Wrong type of input for argument '+str(i_pos+1))
-            user_command_input() #restart the terminal attempt
-            return None
-    return arguments_list
+    if command == 'loadlevel':
+        save.load_level()
 
 #################################################################################################
 ########################## ACTUAL TERMINAL COMMANDS HERE ########################################

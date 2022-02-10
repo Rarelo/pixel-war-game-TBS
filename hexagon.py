@@ -26,13 +26,14 @@ def export_hexagon_dictionary():
     '''exports a complete list of the positions and types of hexagons in the
     level for level/game saving'''
     level_hexagons = list(hexagon_dictionary.keys())
+    print(level_hexagons)
     list_index = -1
     for i in level_hexagons:
         list_index += 1 #have to keep track of the element of the list to write it later
         specific_hexagon = hexagon_dictionary.get(i)
         specific_hexagon_type = specific_hexagon.type #get the type of the hexagon
-        x =i[0]
-        y =i[1]
+        x = i[0]
+        y = i[1]
         level_hexagons[list_index] = (x,y,specific_hexagon_type)
     return level_hexagons
 
