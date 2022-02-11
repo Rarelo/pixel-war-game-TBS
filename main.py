@@ -17,6 +17,8 @@ import terminal
 #focus on making code I'll need to use more than in one instance as clean and modular as possible
 #create a prototype, then create a presetable MVP as a proof of concept
 
+#this program doesn't actually delete any of the hexagons from memory, which might be a problem
+
 #### BUGS ####
 #camera x,y movemnt does not scale, and scaling down causes the game to become really far away
 #strange things happening in the terminal with inputs like hexagon(1,0,normal(
@@ -28,17 +30,10 @@ clock = pygame.time.Clock()
 
 #display settings
 render.create_game_screen(1920,1080) #if you call this render function again it breaks placing hexagons
-#360,202
-#create objects
-hexagon.Hexagon(0,0,'normal') #creates a single polygon to prevent a render crash
-unit.Unit(0,0)
+#original size 360,202
 
-for i in range(50):
-    value = random.randint(0,1)
-    if value == 0:
-        value = 'normal'
-    else: value = 'water'
-    hexagon.Hexagon(random.randint(-i,i),random.randint(-i,i),value)
+hexagon.Hexagon(0,0,'normal')
+zunit.Unit(0,0)
 
 render.sort_polygons()
 

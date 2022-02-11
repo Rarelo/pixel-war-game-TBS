@@ -31,7 +31,8 @@ def game_update_screen():
     #print(unit.unit_group.sprites())
 
 def sort_polygons():
-    '''orders the hexagon_dictionary so that sprites render in the correct order.
+    '''Clear the hexagon_group render group and fills with the an ordered
+    hexagon_dictionary so that sprites render in the correct order.
     NOTE: Run after each new polygon that is added after game init'''
     hexagon.hexagon_group = pygame.sprite.LayeredUpdates()
     ydictionary = {}

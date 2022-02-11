@@ -10,6 +10,13 @@ import hexagon
 
 unit_group = pygame.sprite.LayeredUpdates()
 
+def clear_all_units():
+    '''deltes all units from the unit_group and should also delte from memory
+    but I have no idea how that works'''
+    global unit_group
+    #would it save time to add this method to the class itself?
+    unit_group = pygame.sprite.LayeredUpdates()
+
 class Unit(pixelobject.Pixelobject):
     def __init__(self,a,b):
         '''create the unit class for OOB'''

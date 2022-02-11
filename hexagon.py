@@ -26,7 +26,7 @@ def export_hexagon_dictionary():
     '''exports a complete list of the positions and types of hexagons in the
     level for level/game saving'''
     level_hexagons = list(hexagon_dictionary.keys())
-    print(level_hexagons)
+    #print(level_hexagons)
     list_index = -1
     for i in level_hexagons:
         list_index += 1 #have to keep track of the element of the list to write it later
@@ -36,6 +36,22 @@ def export_hexagon_dictionary():
         y = i[1]
         level_hexagons[list_index] = (x,y,specific_hexagon_type)
     return level_hexagons
+
+def import_hexagon_dictionary(level_hexagons_list):
+    global hexagon_dictionary
+    clear_all_hexagons()
+    for i in level_hexagons_list:
+        hexagon = Hexagon(i[0],i[1],i[2])
+        hexagon_dictionary[i[0],i[1]] = hexagon
+
+def clear_all_hexagons():
+    '''deltes all hexagons from the hexagon_dictionary. Should also delete from
+    memory but I have no idea how that works'''
+    #hexagon_list = hexagon_dictionary.values()
+    #for i in hexagon_list:
+    #    print(i)
+        #cull each hexagon
+    hexagon_dictionary.clear()
 
 class Hexagon(pixelobject.Pixelobject):
     def __init__(self,a,b,type):

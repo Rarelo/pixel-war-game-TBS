@@ -61,5 +61,4 @@ def parse_save_file(first_line,file_contents):
                 return None
     if Nonecheck == None: #if check inputs encounters an error abort
         return None
-    print(loaded_list)
     return loaded_list

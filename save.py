@@ -2,6 +2,8 @@ import os
 import directories
 import hexagon
 import parse
+import render
+import unit
 
 ###############################################################################
 ################ File for Saving and Loading Levels and Games #################
@@ -23,6 +25,9 @@ def save_level():
 #possible that it should read the file chunks at a time for memory purporses
 
 def load_level():
+    '''take in the level hexagon save file, parse it into a list, replace the
+    old hexagon dictionary, & update the hexagon render group. Deletes units.'''
+    unit.clear_all_units()
     filepath = os.path.join(directories.LEVELS, 'level_test.txt')
     with open(filepath,'r') as file:
         first_line = file.readline() #outputs a string
@@ -30,6 +35,7 @@ def load_level():
     level_hexagons_list = parse.parse_save_file(first_line,file_contents)
     if level_hexagons_list == None: #quit the save attempt if file is corrupt
         return None
-    #next step here is to import/overwrite the hexagon dictionary kinda like save_level
+    hexagon.import_hexagon_dictionary(level_hexagons_list)
+    render.sort_polygons()
 
-#need to clear both the hexagon and units by nessesity when loading a new level
+#possibly add load confirmation
